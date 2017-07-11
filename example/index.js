@@ -13,6 +13,7 @@ var debug = require("debug")("express-socket.io-session:example"),
 // Attach session
 app.use(session);
 
+
 // Share session with io sockets
 io.use(sharedsession(session, {
   autoSave: true
@@ -34,12 +35,14 @@ app.use(require("express").static(__dirname));
 
 // Set session data via express request
 app.use("/login", function(req, res, next) {
-  debug("Requested /login")
-  req.session.user = {
-    username: "OSK"
-  };
-  //req.session.save();
-  res.redirect("/");
+
+  //
+  // debug("Requested /login")
+  // req.session.user = {
+  //   username: "OSK"
+  // };
+  // //req.session.save();
+  // res.redirect("/");
 });
 // Unset session data via express request
 app.use("/logout", function(req, res, next) {
@@ -51,15 +54,15 @@ app.use("/logout", function(req, res, next) {
 
 
 io.on("connection", function(socket) {
-  socket.emit("sessiondata", socket.handshake.session);
+  socket.emit("sessiondata", socket.handshake.session.user);
   // Set session data via socket
   debug("Emitting session data");
   socket.on("login", function() {
     debug("Received login message");
-    socket.handshake.session.user = {
-      username: "OSK"
-    };
-    debug("socket.handshake session data is %j.", socket.handshake.session);
+    // socket.handshake.session.user = {
+    //   username: "OSK"
+    // };
+    debug("socket.handshake session data is %j.", socket.handshake.session.user);
 
     // socket.handshake.session.save();
     //emit logged_in for debugging purposes of this example
@@ -79,4 +82,4 @@ io.on("connection", function(socket) {
 });
 
 
-server.listen(3000);
+server.listen(8002);

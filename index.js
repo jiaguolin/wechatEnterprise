@@ -101,7 +101,6 @@ module.exports = function(expressSessionMiddleware, cookieParserMiddleware, opti
 
     // determine if session should be destroyed
     function shouldDestroy(req) {
-      return req.sessionID && unsetDestroy && req.session == null;
     }
 
     // determine if session should be saved to store
